@@ -1,7 +1,12 @@
-## Experiment 3:Implementation of Approximate Inference in Bayesian Networks
-## Name: Keerthika N
-## Register no.: 212221230049
 ## Date: 08.09.2024
+
+<h1 align="center">  
+   Experiment 3: Implementation of Approximate Inference in Bayesian Networks
+</h1>  
+
+### Name: Keerthika N
+### Register Number: 212221230049
+
 ## Aim: 
    To construct a python program to implement approximate inference using Gibbs Sampling.</br>
 ## Algorithm:
@@ -33,13 +38,13 @@
 
 ## Program:
 ```python
-!pip install pgmpy
-!pip install networkx
 from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.sampling import GibbsSampling
 import networkx as nx
 import matplotlib.pyplot as plt
+
+# Define the Bayesian Network structure
 alarm_model = BayesianNetwork(
     [
         ("Burglary", "Alarm"),
@@ -50,14 +55,8 @@ alarm_model = BayesianNetwork(
 )
 
 # Defining the parameters using CPT
-from pgmpy.factors.discrete import TabularCPD
-
-cpd_burglary = TabularCPD(
-    variable="Burglary", variable_card=2, values=[[0.999], [0.001]]
-)
-cpd_earthquake = TabularCPD(
-    variable="Earthquake", variable_card=2, values=[[0.998], [0.002]]
-)
+cpd_burglary = TabularCPD(variable="Burglary", variable_card=2, values=[[0.999], [0.001]])
+cpd_earthquake = TabularCPD(variable="Earthquake", variable_card=2, values=[[0.998], [0.002]])
 cpd_alarm = TabularCPD(
     variable="Alarm",
     variable_card=2,
@@ -81,35 +80,48 @@ cpd_marycalls = TabularCPD(
 )
 
 # Associating the parameters with the model structure
-alarm_model.add_cpds(
-    cpd_burglary, cpd_earthquake, cpd_alarm, cpd_johncalls, cpd_marycalls
-)
+alarm_model.add_cpds(cpd_burglary, cpd_earthquake, cpd_alarm, cpd_johncalls, cpd_marycalls)
 print("Bayesian Network Structure")
 print(alarm_model)
-G=nx.DiGraph()
+
+# Define nodes and edges
+nodes = ["Burglary", "Earthquake", "Alarm", "JohnCalls", "MaryCalls"]
+edges = [("Burglary", "Alarm"), ("Earthquake", "Alarm"), ("Alarm", "JohnCalls"), ("Alarm", "MaryCalls")]
+
+# Create a directed graph for visualization
+G = nx.DiGraph()
 G.add_nodes_from(nodes)
 G.add_edges_from(edges)
-pos={
-    'Burglary':(0,0),
-    'Earthquake':(2,0),
-    'Alarm':(1,-2),
-    'JohnCalls':(0,-4),
-    'MaryCalls':(2,-4)
-    }
-nx.draw(G,pos,with_labels=True,node_size=1500,node_color="skyblue",font_size=10,font_weight="bold",arrowsize=20)
+
+# Positioning the nodes
+pos = {
+    'Burglary': (0, 0),
+    'Earthquake': (2, 0),
+    'Alarm': (1, -2),
+    'JohnCalls': (0, -4),
+    'MaryCalls': (2, -4)
+}
+
+# Draw the graph
+nx.draw(G, pos, with_labels=True, node_size=1500, node_color="skyblue", font_size=10, font_weight="bold", arrowsize=20)
 plt.title("Bayesian Network: Burglar Alarm Problem")
 plt.show()
-gibbssampler=GibbsSampling(alarm_model)
-num_samples=10000
-samples=gibbssampler.sample(size=num_samples)
-query_variable="Burglary"
-query_result=samples[query_variable].value_counts(normalize=True)
-print("\n Approximate probabilities of {}:".format(query_variable))
+
+# Gibbs sampling
+gibbssampler = GibbsSampling(alarm_model)
+num_samples = 10000
+samples = gibbssampler.sample(size=num_samples)
+query_variable = "Burglary"
+query_result = samples[query_variable].value_counts(normalize=True)
+
+# Print the approximate probabilities
+print("\nApproximate probabilities of {}:".format(query_variable))
 print(query_result)
+
 ```
 
 ## Output:
-![image](https://github.com/user-attachments/assets/a5b1b4df-ff63-423c-a8b1-41e6e97435b5)
+![Screenshot 2024-11-08 at 2 46 26 PM](https://github.com/user-attachments/assets/4489d12c-2916-46d6-9160-0829042b447d)
 
 ## Result:
-Thus, Gibb's Sampling( Approximate Inference method) is succuessfully implemented using python.
+Thus, Gibb's Sampling (Approximate Inference method) is succuessfully implemented using python.
