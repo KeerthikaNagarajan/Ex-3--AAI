@@ -1,4 +1,4 @@
-## Date: 08.09.2024
+## Date: 16.08.2024
 
 <h1 align="center">  
    Experiment 3: Implementation of Approximate Inference in Bayesian Networks
